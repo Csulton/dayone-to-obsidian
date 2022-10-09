@@ -9,7 +9,8 @@ import shutil
 import time
 
 # Set this as the location where your Journal.json file is located
-root = r"D:\OneDrive\Documents\dayone" 
+
+root = r"/Users/christiansulton/Documents/dayone_test_ground/10-09-2022_3-44-PM" #DayOne export Test Ground
 icons = False   # Set to true if you are using the Icons Plugin in Obsidian
 tagPrefix = "#journal/"  # This will append journal/ as part of the tag name for sub-tags ie. instead of #entry, it is #journal/entry. To exclude set to "". If you change journal to something else, make sure you keep the trailing /
 
@@ -18,9 +19,9 @@ journalFolder = os.path.join(root, "journal") #name of folder where journal entr
 fn = os.path.join( root, "Journal.json" )
 
 # Clean out existing journal folder, otherwise each run creates new files
-if os.path.isdir(journalFolder):
-    print ("Deleting existing folder: %s" % journalFolder)
-    shutil.rmtree(journalFolder)
+#if os.path.isdir(journalFolder):
+ #   print ("Deleting existing folder: %s" % journalFolder)
+  #  shutil.rmtree(journalFolder)
 
 time.sleep(2)  # Give time for folder deletion to complete. Only a problem if you have the folder open when trying to run the script
 if not os.path.isdir(journalFolder):
@@ -74,16 +75,18 @@ with open(fn, encoding='utf-8') as json_file:
                 # Assuming all jpeg extensions.
 
                 for p in entry['photos']:
-                    pfn = os.path.join( root, 'photos', '%s.jpeg' % p['md5'] )
+                    pfn = os.path.join( root, 'photos', '%s.png' % p['md5'] )
+                    print(pfn)
                     if os.path.isfile( pfn ):
-                        newfn = os.path.join( root, 'photos', '%s.jpeg' % p['identifier'] )
+                        newfn = os.path.join( root, 'photos', '%s.png' % p['md5'] )
                         print ( 'Renaming %s to %s' % (pfn, newfn ))
                         os.rename( pfn, newfn )
 
                 # Now to replace the text to point to the file in obsidian
-                newText = re.sub(r"(\!\[\]\(dayone-moment:\/\/)([A-F0-9]+)(\))", r'![[\2.jpeg]]', newText)
+                newText = re.sub(r"(\!\[\]\(dayone-moment:\/\/)([A-F0-9]+)(\))", r'![[\2.png]]', newText)
 
             newEntry.append( newText )
+            #print(newEntry)
         except KeyError:
             pass
 
